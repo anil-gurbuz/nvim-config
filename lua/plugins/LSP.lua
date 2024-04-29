@@ -84,7 +84,7 @@ function plugin.config()
 	require("mason").setup()
 
 	local ensure_installed = vim.tbl_keys(servers or {})
-	vim.list_extend(ensure_installed, { "stylua", "black", "ruff", "prettierd", "prettier" })
+	vim.list_extend(ensure_installed, { "stylua", "black", "prettierd", "prettier" }) --ruff
 	require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
 	local function setup_handler(server_name)
