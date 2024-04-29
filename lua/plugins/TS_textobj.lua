@@ -15,12 +15,12 @@ function plugin.config()
 
 				keymaps = {
 					-- You can use the capture groups defined in textobjects.scm
-					["if"] = { query = "@function.inner", desc = "Select [I]nner [F]unction" },
-					["af"] = { query = "@function.outer", desc = "Select [A] [F]unction" },
-					["ic"] = { query = "@class.inner", desc = "Select [I]nner [C]lass" },
-					["ac"] = { query = "@class.outer", desc = "Select [A] [C]lass" },
+					["if"] = { query = "@function.inner", desc = "[I]nner [F]unction" },
+					["af"] = { query = "@function.outer", desc = "[A] [F]unction" },
+					["ic"] = { query = "@class.inner", desc = "[I]nner [C]lass" },
+					["ac"] = { query = "@class.outer", desc = "[A] [C]lass" },
 					-- You can also use captures from other query groups like `locals.scm`
-					["as"] = { query = "@scope", query_group = "locals", desc = "Select [A] [S]cope" },
+					["as"] = { query = "@scope", query_group = "locals", desc = "[A] [S]cope" },
 				},
 				selection_modes = {
 					["@parameter.outer"] = "v", -- charwise
@@ -33,17 +33,17 @@ function plugin.config()
 				enable = true,
 				set_jumps = false,
 				goto_next_start = {
-					["gsf"] = { query = "@function.outer", desc = "[G]o [S]tart [F]unction" },
-					["gsc"] = { query = "@class.outer", desc = "[G]o [S]tart [C]lass" },
-					["gss"] = { query = "@scope", query_group = "locals", desc = "[G]o [S]tart [S]cope" },
-					["gsz"] = { query = "@fold", query_group = "folds", desc = "[G]o [S]tart [Z]old" },
+					["gsf"] = { query = "@function.outer", desc = "Next [F]unction" },
+					["gsc"] = { query = "@class.outer", desc = "Next [C]lass" },
+					["gss"] = { query = "@scope", query_group = "locals", desc = "Next [S]cope" },
+					["gsz"] = { query = "@fold", query_group = "folds", desc = "Next [Z]old" },
 				},
 				goto_next_end = {},
 				goto_previous_start = {
-					["gSf"] = { query = "@function.outer", desc = "Go Previous [F]unction" },
-					["gSc"] = { query = "@class.outer", desc = "Go Previous [C]lass" },
-					["gSs"] = { query = "@scope", query_group = "locals", desc = "Go Previous [S]cope" },
-					["gSz"] = { query = "@fold", query_group = "folds", desc = "Go Previous [Z]old" },
+					["gSf"] = { query = "@function.outer", desc = "Previous [F]unction" },
+					["gSc"] = { query = "@class.outer", desc = "Previous [C]lass" },
+					["gSs"] = { query = "@scope", query_group = "locals", desc = "Previous [S]cope" },
+					["gSz"] = { query = "@fold", query_group = "folds", desc = "Previous [Z]old" },
 				},
 				goto_previous_end = {},
 			},

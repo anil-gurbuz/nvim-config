@@ -20,7 +20,7 @@ function plugin.config()
 		"n",
 		"<C-s>",
 		require("auto-session.session-lens").search_session,
-		{ noremap = true, desc = { "Serch Saved Sessions" } }
+		{ noremap = true, desc = "Serch Saved Sessions" }
 	)
 end
 

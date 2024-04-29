@@ -57,14 +57,3 @@ vim.opt.expandtab = true
 
 -- For a better experience with autosessions
 vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
-
--- vim.wo.foldexpr = "nvim_treesitter#foldexpr()"
--- vim.wo.foldtext = [[v:lua.FirstLineFoldText()]]
--- _G.FirstLineFoldText = function()
--- 	local line = vim.fn.getline(vim.v.foldstart)
--- 	return line
--- end
---
-
--- vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
--- vim.opt.foldtext = "v:lua.vim.treesitter.foldtext()"
