@@ -8,7 +8,7 @@ return {
 	cmd = { "MCstart", "MCvisual", "MCclear", "MCpattern", "MCvisualPattern", "MCunderCursor" },
 	keys = {
 		{
-			mode = { "v", "n" },
+			mode = "v",
 			"<Leader>m",
 			"<cmd>MCstart<cr>",
 			desc = "Multi-Cursor",
