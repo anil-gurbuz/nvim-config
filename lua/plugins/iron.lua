@@ -6,7 +6,21 @@ function plugin.config()
 	configuration_options.scratch_repl = false -- if true cant be buflisted so pretty much those 2 are same things
 	configuration_options.buflisted = true
 	configuration_options.close_window_on_exit = true
-	configuration_options.repl_definition = { python = require("iron.fts.python").ipython } -- Turns out ptpython also has nice features like autocomplition
+	configuration_options.repl_definition = {
+		python = require("iron.fts.python").ipython,
+
+		-- Command to run below :IronRepl django
+		django = {
+			command = function()
+				local venv = vim.fn.environ()["VIRTUAL_ENV"]
+				if venv then
+					return { vim.fn.resolve(venv .. "/bin/python"), "manage.py", "shell", "-i", "ipython" }
+				else
+					return { "python", "manage.py", "shell", "-i", "ipython" }
+				end
+			end,
+		},
+	} -- Turns out ptpython also has nice features like autocomplition
 	-- configuration_options.should_map_plug = true -- lets remapping of shortcuts
 	configuration_options.repl_open_cmd = ""
 

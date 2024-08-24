@@ -25,6 +25,7 @@ function attachment_callback(event)
 
 	map("gD", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
 	map("gR", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
+
 	map("<leader>cs", require("telescope.builtin").lsp_document_symbols, "[C]ode [S]ymbols")
 	map("<leader>cws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[C]ode [W]orkspace [S]ymbols")
 	map("<leader>cr", vim.lsp.buf.rename, "[C]ode [R]ename")
@@ -59,7 +60,7 @@ function plugin.config()
 	})
 
 	local capabilities = vim.lsp.protocol.make_client_capabilities()
-	caspabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+	capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
 	local servers = {}
 	servers.pyright = {}
@@ -74,6 +75,7 @@ function plugin.config()
 	servers.marksman = {} -- Markdown
 	servers.sqlls = {}
 	servers.yamlls = {}
+	servers.tailwindcss = {}
 
 	servers.lua_ls = {}
 	servers.lua_ls.settings = {}
