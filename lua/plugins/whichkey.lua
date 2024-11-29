@@ -7,6 +7,12 @@ function plugin.config()
 		["<leader>l"] = { name = "[L]ayout", _ = "which_key_ignore" },
 		["<leader>c"] = { name = "[C]ode", _ = "which_key_ignore" },
 		["<leader>s"] = { name = "[S]earch", _ = "which_key_ignore" },
+		["<leader>d"] = { name = "[D]ebugger", _ = "which_key_ignore" },
+		["<leader>r"] = { name = "[R]EPL", _ = "which_key_ignore" },
+		["<leader>j"] = { name = "[J]droid", _ = "which_key_ignore" },
+		["<leader>jv"] = { name = "[J]droid [V]isual", _ = "which_key_ignore" },
+		["<leader>jm"] = { name = "[J]droid [M]odel", _ = "which_key_ignore" },
+		["<leader>jn"] = { name = "[J]droid [N]ormal", _ = "which_key_ignore" },
 		["ys"] = { name = "Add [S]urround" },
 		["ds"] = { name = "[D]elete [S]urround" },
 		["cs"] = { name = "[C]hange [S]urround" },
@@ -74,32 +80,31 @@ function plugin.config()
 	presets.motions["gg"] = "which_key_ignore"
 	presets.motions["G"] = "which_key_ignore"
 
-	presets.objects['a"'] = "which_key_ignore"
-	presets.objects["a'"] = "which_key_ignore"
-	presets.objects["a("] = "which_key_ignore"
-	presets.objects["a)"] = "which_key_ignore"
-	presets.objects["aW"] = "which_key_ignore"
-	presets.objects["a["] = "which_key_ignore"
-	presets.objects["a]"] = "which_key_ignore"
-	presets.objects["a`"] = "which_key_ignore"
-	presets.objects["aw"] = "which_key_ignore"
-	presets.objects["a{"] = "which_key_ignore"
-	presets.objects["a}"] = "which_key_ignore"
-	presets.objects['i"'] = "which_key_ignore"
-	presets.objects["i'"] = "which_key_ignore"
-	presets.objects["i("] = "which_key_ignore"
-	presets.objects["i)"] = "which_key_ignore"
-	presets.objects["iW"] = "which_key_ignore"
-	presets.objects["i["] = "which_key_ignore"
-	presets.objects["i]"] = "which_key_ignore"
-	presets.objects["i`"] = "which_key_ignore"
-	presets.objects["iw"] = "which_key_ignore"
-	presets.objects["i{"] = "which_key_ignore"
-	presets.objects["i}"] = "which_key_ignore"
+	-- presets.objects["a'"] = "which_key_ignore"
+	presets.text_objects["a'"] = "which_key_ignore"
+	presets.text_objects["a("] = "which_key_ignore"
+	presets.text_objects["a)"] = "which_key_ignore"
+	presets.text_objects["aW"] = "which_key_ignore"
+	presets.text_objects["a["] = "which_key_ignore"
+	presets.text_objects["a]"] = "which_key_ignore"
+	presets.text_objects["a`"] = "which_key_ignore"
+	presets.text_objects["aw"] = "which_key_ignore"
+	presets.text_objects["a{"] = "which_key_ignore"
+	presets.text_objects["a}"] = "which_key_ignore"
+	presets.text_objects['i"'] = "which_key_ignore"
+	presets.text_objects["i'"] = "which_key_ignore"
+	presets.text_objects["i("] = "which_key_ignore"
+	presets.text_objects["i)"] = "which_key_ignore"
+	presets.text_objects["iW"] = "which_key_ignore"
+	presets.text_objects["i["] = "which_key_ignore"
+	presets.text_objects["i]"] = "which_key_ignore"
+	presets.text_objects["i`"] = "which_key_ignore"
+	presets.text_objects["iw"] = "which_key_ignore"
+	presets.text_objects["i{"] = "which_key_ignore"
+	presets.text_objects["i}"] = "which_key_ignore"
 
 	require("which-key").setup()
 	require("which-key").register(keymaps)
-
 	vim.keymap.set("n", "<leader>p", ":WhichKey<cr>", { desc = "[P]ossible Keys" })
 	vim.keymap.set("n", "<leader>pv", ":WhichKey '' v<cr>", { desc = "[P]ossible [V]isual Mode Keys" })
 end

@@ -17,10 +17,21 @@ sudo ln -sf /opt/nvim-linux64/bin/nvim /usr/local/bin/
 
 
 ### Ubuntu dependencies install
+
+
+#### Option 1
+For pre-built version -- might be an old version
 ```
 sudo add-apt-repository ppa:neovim-ppa/unstable -y
 sudo apt update
 sudo apt install make gcc ripgrep unzip git xclip neovim
+```
+#### Option 2
+For non-built version -- for most recent version
+```
+curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
+sudo rm -rf /opt/nvim
+sudo tar -C /opt -xzf nvim-linux64.tar.gz
 ```
 
 

@@ -57,3 +57,8 @@ vim.opt.expandtab = true
 
 -- For a better experience with autosessions
 vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+	pattern = "*",
+	command = "set expandtab | retab",
+})

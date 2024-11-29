@@ -70,12 +70,14 @@ function plugin.config()
 	servers.html = {}
 	servers.jsonls = {}
 	servers.jdtls = {} --java lsp
-	servers.tsserver = {} -- javascript & typscript
+	-- servers.tsserver = {} -- javascript & typscript
 	servers.ltex = {} -- Latex
 	servers.marksman = {} -- Markdown
 	servers.sqlls = {}
 	servers.yamlls = {}
 	servers.tailwindcss = {}
+	servers.stylelint = {}
+	servers.prettier = {}
 
 	servers.lua_ls = {}
 	servers.lua_ls.settings = {}

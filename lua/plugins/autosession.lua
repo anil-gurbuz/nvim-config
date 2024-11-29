@@ -18,7 +18,7 @@ function plugin.config()
 	})
 	vim.keymap.set(
 		"n",
-		"<C-s>",
+		"<leader><C-s>",
 		require("auto-session.session-lens").search_session,
 		{ noremap = true, desc = "Serch Saved Sessions" }
 	)
