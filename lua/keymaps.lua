@@ -43,7 +43,7 @@ vim.keymap.set("n", "<leader><C-w>", ":bd!<cr>:bp<cr>", { desc = "Force Delete C
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 
 vim.keymap.set("n", "<leader>q", "@", { desc = "Run the Macro ..." })
-vim.keymap.set("n", "<leader>m", "`", { desc = "Move to Mark ..." })
+-- vim.keymap.set("n", "<leader>m", "`", { desc = "Move to Mark ..." })
 
 vim.keymap.set("n", "<leader>a", "gg0vG$", { desc = "which_key_ignore" })
 
@@ -74,3 +74,25 @@ vim.api.nvim_create_user_command("DiffOrig", function()
 	vim.cmd.wincmd("p")
 	vim.cmd.diffthis() -- current buffer
 end, {})
+
+-- Remove the default mark jumping mapping
+-- vim.keymap.set("n", "<leader>m", "`", { desc = "Move to Mark ..." })
+-- Swap global/local mark creation and jumping
+for i = 0, 25 do
+	local lower = string.char(97 + i) -- a-z
+	local upper = string.char(65 + i) -- A-Z
+
+	-- When using lowercase, set uppercase (global) mark
+	vim.keymap.set("n", "m" .. lower, function()
+		vim.cmd("mark " .. upper)
+	end, { desc = "Set global mark " .. upper })
+
+	-- When using uppercase, set lowercase (local) mark
+	vim.keymap.set("n", "m" .. upper, function()
+		vim.cmd("mark " .. lower)
+	end, { desc = "Set local mark " .. lower })
+
+	-- Jump to marks with leader
+	vim.keymap.set("n", "<leader>m" .. lower, "`" .. upper, { desc = "Jump to global mark " .. upper })
+	vim.keymap.set("n", "<leader>m" .. upper, "`" .. lower, { desc = "Jump to local mark " .. lower })
+end

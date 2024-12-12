@@ -5,9 +5,9 @@ function plugin.config()
 		log_level = "error",
 		auto_session_enabled = true, -- auto save and restore
 		auto_session_create_enabled = true, --Main func -- autosave the session
-		auto_save_enabled = nil, --can be true, false, nil
-		auto_restore_enabled = nil, --can be true, false, nil
-		auto_session_use_git_branch = nil, --can be true, false, nil
+		auto_save_enabled = true, --can be true, false, nil
+		auto_restore_enabled = true, --can be true, false, nil
+		auto_session_use_git_branch = true, --can be true, false, nil
 		-- auto_session_suppress_dirs = { "~/", "~/Downloads", "/"},
 		session_lens = {
 			buftypes_to_ignore = {},
