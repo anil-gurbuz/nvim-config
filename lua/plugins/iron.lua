@@ -20,6 +20,21 @@ function plugin.config()
 				end
 			end,
 		},
+
+		-- Node.js REPL configuration
+		-- Node.js REPL configuration
+		javascript = {
+			command = function()
+				local history_file = vim.fn.expand("~/.node_repl_history")
+				local config_file = vim.fn.expand("~/.config/nvim/lua/node_repl_init.js")
+				return {
+					"node",
+					"--experimental-repl-await", -- Enable top-level await
+					config_file,
+					history_file,
+				}
+			end,
+		},
 	} -- Turns out ptpython also has nice features like autocomplition
 	-- configuration_options.should_map_plug = true -- lets remapping of shortcuts
 	configuration_options.repl_open_cmd = ""
@@ -31,7 +46,18 @@ function plugin.config()
 	local iron = require("iron.core")
 	iron.setup({ config = configuration_options, keymaps = keymaps }) -- highlight = {italic = true}, ignore_blank_lines = true
 
-	local ftype = "python" -- NOTE: ASSUMES PYTHON ONLY
+	-- Function to determine REPL type based on filetype
+	local function get_repl_type()
+		local ft = vim.bo.filetype
+		if ft == "javascript" or ft == "javascriptreact" or ft == "typescript" or ft == "typescriptreact" then
+			return "javascript"
+		elseif ft == "python" then
+			return "python"
+		else
+			return "python" -- default fallback
+		end
+	end
+
 	vim.keymap.set("n", "<leader>rr", "<cmd>IronRestart<cr>", { desc = "[R]EPL [R]estart" })
 	vim.keymap.set("n", "<leader>ri", function()
 		iron.send(nil, string.char(03))
@@ -40,6 +66,7 @@ function plugin.config()
 		iron.send(nil, string.char(12))
 	end, { desc = "[R]EPL [C]lear" })
 	vim.keymap.set("n", "<leader>rs", function()
+		local ftype = get_repl_type()
 		iron.repl_here(ftype)
 	end, { desc = "[R]EPL [S]tart" })
 end
