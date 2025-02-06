@@ -287,7 +287,8 @@ function plugin.config()
 			vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, {
 				pattern = "*.py",
 				callback = function()
-					local client = vim.lsp.get_active_clients({ name = "pyright" })[1]
+					local clients = vim.lsp.get_active_clients({ name = "pyright" })
+					local client = clients and clients[1]
 					if client then
 						-- Trigger a full workspace analysis
 						client.notify("workspace/didChangeConfiguration", {
