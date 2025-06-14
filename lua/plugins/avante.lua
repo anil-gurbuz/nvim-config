@@ -35,17 +35,53 @@ local plugin = {
 	},
 	event = "VeryLazy",
 	-- lazy = false,
-	version = false, -- set this if you want to always pull the latest change
+	-- version = true, -- set this if you want to always pull the latest change
 
 	opts = {
-		---@alias Provider "claude" | "openai" | "azure" | "gemini" | "cohere" | "copilot" | string
+		-- provider options
 		provider = "claude", -- Recommend using Claude
-		auto_suggestions_provider = "claude", -- Since auto-suggestions are a high-frequency operation and therefore expensive, it is recommended to specify an inexpensive provider or even a free provider: copilot
+		cursor_applying_provider = "groq", -- In this example, use Groq for applying, but you can also use any provider you want.
+		auto_suggestions_provider = "copilot", -- Since auto-suggestions are a high-frequency operation and therefore expensive, it is recommended to specify an inexpensive provider or even a free provider: copilot
 		claude = {
 			endpoint = "https://api.anthropic.com",
 			model = "claude-3-7-sonnet-20250219",
 			temperature = 0,
 			max_tokens = 4096,
+			disable_tools = true,
+			api_key_name = "ANTHROPIC_API_KEY", -- Add this line
+			-- endpoint = "bedrock", -- Use "bedrock" to indicate AWS Bedrock
+			-- model = "anthropic.claude-3-sonnet-20240229-v1:0", -- Bedrock model ID for Claude 3 Sonnet
+			-- temperature = 0,
+			-- max_tokens = 4096,
+			-- api_key_name = "AWS_ACCESS_KEY_ID", -- AWS access key
+			-- api_secret_name = "AWS_SECRET_ACCESS_KEY", -- AWS secret key
+			-- region = "us-east-1", -- Your AWS region (change if needed)
+		},
+
+		rag_service = {
+			enabled = false, -- Enables the rag service, requires OPENAI_API_KEY to be set
+			host_mount = "/home/anil/projects/", -- Host mount path for the rag service (docker will mount this path)
+			runner = "docker", -- The runner for the rag service, (can use docker, or nix)
+			provider = "openai", -- The provider to use for RAG service. eg: openai or ollama
+			llm_model = "", -- The LLM model to use for RAG service
+			embed_model = "", -- The embedding model to use for RAG service
+			endpoint = "https://api.openai.com/v1", -- The API endpoint for RAG service
+			docker_extra_args = "", -- Extra arguments to pass to the docker command
+		},
+		web_search_engine = {
+			provider = "tavily",
+			providers = {
+				tavily = {
+					api_key_name = "TAVILY_API_KEY",
+					extra_request_body = {
+						include_answer = "basic",
+					},
+					---@type WebSearchEngineProviderResponseBodyFormatter
+					format_response_body = function(body)
+						return body.answer, nil
+					end,
+				},
+			},
 		},
 		---Specify the special dual_boost mode
 		---1. enabled: Whether to enable dual_boost mode. Default to false.
@@ -64,12 +100,27 @@ local plugin = {
 			timeout = 60000, -- Timeout in milliseconds
 		},
 		behaviour = {
-			auto_suggestions = true, -- Experimental stage
-			auto_set_highlight_group = true,
+			auto_suggestions = false, -- Experimental stage
+			auto_set_highlight_group = false,
 			auto_set_keymaps = true,
 			auto_apply_diff_after_generation = true,
 			support_paste_from_clipboard = true,
 			minimize_diff = true, -- Whether to remove unchanged lines when applying a code block
+			enable_token_counting = true,
+			enable_cursor_planning_mode = false,
+			enable_claude_text_editor_tool_mode = false,
+			use_cwd_as_project_root = false,
+		},
+
+		vendors = {
+			--- ... existing vendors
+			groq = { -- define groq provider
+				__inherited_from = "openai",
+				api_key_name = "GROQ_API_KEY",
+				endpoint = "https://api.groq.com/openai/v1/",
+				model = "llama-3.3-70b-versatile",
+				max_tokens = 32768, -- remember to increase this value, otherwise it will stop generating halfway
+			},
 		},
 		mappings = {
 			--- @class AvanteConflictMappings
@@ -82,12 +133,12 @@ local plugin = {
 				next = "]x",
 				prev = "[x",
 			},
-			suggestion = {
-				accept = "<C-k>",
-				next = "<C-l>",
-				prev = "<C-H>",
-				dismiss = "<C-]>",
-			},
+			-- suggestion = {
+			--  accept = "<C-k>",
+			--  next = "<C-l>",
+			--  prev = "<C-H>",
+			--  dismiss = "<C-]>",
+			-- },
 			jump = {
 				next = "]]",
 				prev = "[[",
@@ -124,7 +175,7 @@ local plugin = {
 			},
 			ask = {
 				floating = false, -- Open the 'AvanteAsk' prompt in a floating window
-				start_insert = true, -- Start insert mode when opening the ask window
+				start_insert = false, -- Start insert mode when opening the ask window
 				border = "rounded",
 				---@type "ours" | "theirs"
 				focus_on_apply = "ours", -- which diff to focus after applying
@@ -152,4 +203,5 @@ local plugin = {
 	-- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
 	build = "make",
 }
+
 return plugin

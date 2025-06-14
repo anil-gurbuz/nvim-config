@@ -147,10 +147,10 @@ return {
 				require("dapui").eval(nil, { enter = false, context = "repl" })
 			end, { desc = "Debug quick eval selection in float" })
 
-			vim.keymap.set("n", "<F1>", dap.continue, { desc = "Debugger Continue" })
+			vim.keymap.set("n", "<F1>", dap.step_into, { desc = "Debugger Step Into" })
+			vim.keymap.set("n", "<F2>", dap.step_over, { desc = "Debugger Step Over" })
+			vim.keymap.set("n", "<F3>", dap.continue, { desc = "Debugger Continue to cursor" })
 
-			vim.keymap.set("n", "<F2>", dap.step_into, { desc = "Debugger Step Into" })
-			vim.keymap.set("n", "<F3>", dap.step_over, { desc = "Debugger Step Over" })
 			vim.keymap.set("n", "<F4>", dap.step_out, { desc = "Debugger Step Out" })
 			vim.keymap.set("n", "<F5>", dap.step_back, { desc = "Debugger Step Back" })
 			vim.keymap.set("n", "<F11>", dap.restart, { desc = "Debugger Restart" })

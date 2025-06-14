@@ -55,6 +55,9 @@ vim.opt.shiftwidth = 4
 vim.opt.softtabstop = 4
 vim.opt.expandtab = true
 
+-- Show a single global statusline at the bottom, shared across all windows
+-- This is needed for avante to render properly
+vim.opt.laststatus = 3
 -- For a better experience with autosessions
 vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 
