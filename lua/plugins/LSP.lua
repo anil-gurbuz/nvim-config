@@ -86,234 +86,70 @@ function plugin.config()
 	local capabilities = vim.lsp.protocol.make_client_capabilities()
 	capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
-	local servers = {}
-	servers.pyright = {}
-	servers.cssls = {}
-	servers.bashls = {}
-
-	servers.dockerls = {}
-	servers.html = {}
-	servers.jsonls = {
-		filetypes = { "json", "jsonc", "pep8" },
-	}
-	servers.jdtls = {} --java lsp
-	-- servers.tsserver = {} -- javascript & typscript
-	-- Enable tsserver with specific diagnostics settings
-	-- servers.tsserver = {
-	--     settings = {
-	--         typescript = {
-	--             inlayHints = {
-	--                 includeInlayParameterNameHints = "all",
-	--                 includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-	--                 includeInlayFunctionParameterTypeHints = true,
-	--                 includeInlayVariableTypeHints = true,
-	--                 includeInlayPropertyDeclarationTypeHints = true,
-	--                 includeInlayFunctionLikeReturnTypeHints = true,
-	--                 includeInlayEnumMemberValueHints = true,
-	--             },
-	--             suggest = {
-	--                 includeCompletionsForModuleExports = true,
-	--             },
-	--             diagnostics = {
-	--                 -- Enable all diagnostics
-	--                 enable = true,
-	--                 -- Specifically enable unused variable and import diagnostics
-	--                 unusedSymbols = true,
-	--             },
-	--         },
-	--         javascript = {
-	--             inlayHints = {
-	--                 includeInlayParameterNameHints = "all",
-	--                 includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-	--                 includeInlayFunctionParameterTypeHints = true,
-	--                 includeInlayVariableTypeHints = true,
-	--                 includeInlayPropertyDeclarationTypeHints = true,
-	--                 includeInlayFunctionLikeReturnTypeHints = true,
-	--                 includeInlayEnumMemberValueHints = true,
-	--             },
-	--             suggest = {
-	--                 includeCompletionsForModuleExports = true,
-	--             },
-	--             diagnostics = {
-	--                 -- Enable all diagnostics
-	--                 enable = true,
-	--                 -- Specifically enable unused variable and import diagnostics
-	--                 unusedSymbols = true,
-	--             },
-	--         },
-	--     },
-	-- }
-
-	servers.ltex = {} -- Latex
-	servers.marksman = {} -- Markdown
-	servers.sqlls = {}
-	servers.yamlls = {}
-	servers.tailwindcss = {}
-	servers.stylelint = {}
-	servers.prettier = {}
-	servers.jinja_lsp = {}
-
-	-- Vue.js configuration
-	servers.volar = {
-		takeOverMode = { enabled = true },
-		filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue", "json" },
-		init_options = {
-			preferences = {
-				importModuleSpecifierPreference = "relative",
-			},
-			documentFeatures = {
-				selectionRange = true,
-				foldingRange = true,
-				linkedEditingRange = true,
-				documentSymbol = true,
-				documentColor = true,
-				documentFormatting = {
-					defaultPrintWidth = 100,
-				},
-			},
-			typescript = {
-				tsdk = vim.fn.expand(
-					"$HOME/.local/share/nvim/mason/packages/typescript-language-server/node_modules/typescript/lib"
-				),
-			},
-			languageFeatures = {
-				implementation = true, -- new
-				references = true, -- new
-				definition = true, -- new
-				typeDefinition = true, -- new
-				callHierarchy = true, -- new
-				hover = true, -- new
-				rename = true, -- new
-				renameFileRefactoring = true, -- new
-				signatureHelp = true, -- new
-				codeAction = true, -- new
-				completion = {
-					defaultTagNameCase = "kebabCase",
-					defaultAttrNameCase = "kebabCase",
-				},
-				diagnostics = true, -- new
-				semanticTokens = true, -- new
-				directories = true, -- new
-				workspaceSymbol = true,
-				codeLens = true,
-			},
+	-- Define servers
+	local servers = {
+		pyright = {},
+		cssls = {},
+		bashls = {},
+		dockerls = {},
+		html = {},
+		jsonls = {
+			filetypes = { "json", "jsonc", "pep8" },
 		},
-		settings = {
-			vue = {
-				complete = {
-					casing = {
-						tags = "kebab",
+		jdtls = {},
+		ltex = {},
+		marksman = {},
+		sqlls = {},
+		yamlls = {},
+		tailwindcss = {},
+		eslint = {},
+		jinja_lsp = {},
+		lua_ls = {
+			settings = {
+				Lua = {
+					completion = {
+						callSnippet = "Replace",
 					},
 				},
 			},
 		},
 	}
-	servers.lua_ls = {}
-	servers.lua_ls.settings = {}
-	servers.lua_ls.settings.Lua = {}
-	servers.lua_ls.settings.Lua.completion = {}
-	servers.lua_ls.settings.Lua.completion.callSnippet = "Replace"
 
-	-- servers.vuels = {
-	--  config = {
-	--      css = {},
-	--      emmet = {},
-	--      html = {
-	--          suggest = {},
-	--      },
-	--      javascript = {
-	--          format = {},
-	--      },
-	--      stylusSupremacy = {},
-	--      typescript = {
-	--          format = {},
-	--      },
-	--      vetur = {
-	--          completion = {
-	--              autoImport = true,
-	--              tagCasing = "kebab",
-	--              useScaffoldSnippets = false,
-	--          },
-	--          format = {
-	--              defaultFormatter = {
-	--                  js = "none",
-	--                  ts = "none",
-	--              },
-	--              defaultFormatterOptions = {},
-	--              scriptInitialIndent = true,
-	--              styleInitialIndent = true,
-	--          },
-	--          useWorkspaceDependencies = true,
-	--          validation = {
-	--              script = true,
-	--              style = true,
-	--              template = true,
-	--          },
-	--      },
-	--  },
-	-- }
-
-	vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-		pattern = { "*.pep8", "setup.cfg" },
-		callback = function()
-			vim.bo.filetype = "ini" -- Use INI syntax highlighting which is more appropriate for .pep8 files
-			vim.bo.syntax = "ini" -- Ensure both traditional and treesitter highlighting work
-		end,
+	-- Setup Mason
+	require("mason").setup({
+		ui = {
+			border = "rounded",
+		},
 	})
-	require("mason").setup()
 
-	local ensure_installed = vim.tbl_keys(servers or {})
-	vim.list_extend(ensure_installed, {
-		"stylua",
-		"autopep8",
-		"isort",
-		"prettierd",
-		"prettier",
-		"vue-language-server",
-		"typescript-language-server",
-		"eslint-lsp",
-	}) --ruff, black
-	require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
+	-- Setup Mason-LSPConfig
+	local mason_lspconfig = require("mason-lspconfig")
+	mason_lspconfig.setup({
+		ensure_installed = vim.tbl_keys(servers),
+		automatic_enable = false,
+	})
 
-	local function setup_handler(server_name)
-		local server = servers[server_name] or {}
-		server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-
-		if server_name == "pyright" then
-			venv_path = os.getenv("CONDA_PREFIX")
-			print("Active venv: " .. tostring(venv_path))
-
-			-- Create autocmd to reload pyright on Python file changes
-			vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, {
-				pattern = "*.py",
-				callback = function()
-					local clients = vim.lsp.get_active_clients({ name = "pyright" })
-					local client = clients and clients[1]
-					if client then
-						-- Trigger a full workspace analysis
-						client.notify("workspace/didChangeConfiguration", {
-							settings = server.settings,
-						})
-					end
-				end,
-			})
-
-			-- Additional pyright configuration
-			server.settings = {
-				python = {
-					analysis = {
-						autoSearchPaths = true,
-						useLibraryCodeForTypes = true,
-						diagnosticMode = "workspace",
-					},
-				},
-			}
-		end
-
-		require("lspconfig")[server_name].setup(server)
+	-- Setup LSP servers
+	local lspconfig = require("lspconfig")
+	for server_name, server_config in pairs(servers) do
+		local config = vim.tbl_deep_extend("force", {
+			capabilities = capabilities,
+		}, server_config)
+		lspconfig[server_name].setup(config)
 	end
 
-	require("mason-lspconfig").setup({ handlers = { setup_handler } })
+	-- Setup Mason Tool Installer
+	require("mason-tool-installer").setup({
+		ensure_installed = {
+			"prettier",
+			"stylua",
+			"eslint_d",
+			"typescript-language-server",
+			"stylelint",
+		},
+		auto_update = true,
+		run_on_start = true,
+	})
 end
 
 return plugin

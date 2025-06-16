@@ -42,20 +42,33 @@ local plugin = {
 		provider = "claude", -- Recommend using Claude
 		cursor_applying_provider = "groq", -- In this example, use Groq for applying, but you can also use any provider you want.
 		auto_suggestions_provider = "copilot", -- Since auto-suggestions are a high-frequency operation and therefore expensive, it is recommended to specify an inexpensive provider or even a free provider: copilot
-		claude = {
-			endpoint = "https://api.anthropic.com",
-			model = "claude-3-7-sonnet-20250219",
-			temperature = 0,
-			max_tokens = 4096,
-			disable_tools = true,
-			api_key_name = "ANTHROPIC_API_KEY", -- Add this line
-			-- endpoint = "bedrock", -- Use "bedrock" to indicate AWS Bedrock
-			-- model = "anthropic.claude-3-sonnet-20240229-v1:0", -- Bedrock model ID for Claude 3 Sonnet
-			-- temperature = 0,
-			-- max_tokens = 4096,
-			-- api_key_name = "AWS_ACCESS_KEY_ID", -- AWS access key
-			-- api_secret_name = "AWS_SECRET_ACCESS_KEY", -- AWS secret key
-			-- region = "us-east-1", -- Your AWS region (change if needed)
+
+		-- NEW: Moved provider configurations under 'providers' table
+		providers = {
+			claude = {
+				endpoint = "https://api.anthropic.com",
+				model = "claude-4-sonnet-20250514",
+				api_key_name = "ANTHROPIC_API_KEY",
+				disable_tools = true,
+				extra_request_body = {
+					temperature = 0,
+					max_tokens = 4096,
+				},
+				-- endpoint = "bedrock", -- Use "bedrock" to indicate AWS Bedrock
+				-- model = "anthropic.claude-3-sonnet-20240229-v1:0", -- Bedrock model ID for Claude 3 Sonnet
+				-- api_key_name = "AWS_ACCESS_KEY_ID", -- AWS access key
+				-- api_secret_name = "AWS_SECRET_ACCESS_KEY", -- AWS secret key
+				-- region = "us-east-1", -- Your AWS region (change if needed)
+			},
+			groq = { -- define groq provider
+				__inherited_from = "openai",
+				api_key_name = "GROQ_API_KEY",
+				endpoint = "https://api.groq.com/openai/v1/",
+				model = "llama-3.3-70b-versatile",
+				extra_request_body = {
+					max_tokens = 32768, -- remember to increase this value, otherwise it will stop generating halfway
+				},
+			},
 		},
 
 		rag_service = {
@@ -103,7 +116,7 @@ local plugin = {
 			auto_suggestions = false, -- Experimental stage
 			auto_set_highlight_group = false,
 			auto_set_keymaps = true,
-			auto_apply_diff_after_generation = true,
+			auto_apply_diff_after_generation = false,
 			support_paste_from_clipboard = true,
 			minimize_diff = true, -- Whether to remove unchanged lines when applying a code block
 			enable_token_counting = true,
@@ -112,16 +125,6 @@ local plugin = {
 			use_cwd_as_project_root = false,
 		},
 
-		vendors = {
-			--- ... existing vendors
-			groq = { -- define groq provider
-				__inherited_from = "openai",
-				api_key_name = "GROQ_API_KEY",
-				endpoint = "https://api.groq.com/openai/v1/",
-				model = "llama-3.3-70b-versatile",
-				max_tokens = 32768, -- remember to increase this value, otherwise it will stop generating halfway
-			},
-		},
 		mappings = {
 			--- @class AvanteConflictMappings
 			diff = {
@@ -139,6 +142,10 @@ local plugin = {
 			--  prev = "<C-H>",
 			--  dismiss = "<C-]>",
 			-- },
+			cancel = {
+				normal = { "<C-c>", "<Esc>", "q" },
+				insert = { "<C-c>" },
+			},
 			jump = {
 				next = "]]",
 				prev = "[[",
