@@ -7,6 +7,7 @@ local plugin = {
 		require("nvim-tree").setup({
 			filters = {
 				git_ignored = false, -- Set this to false to show git ignored files
+				custom = { "^__pycache__$" },
 			},
 		})
 

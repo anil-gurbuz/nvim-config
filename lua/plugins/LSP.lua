@@ -54,6 +54,21 @@ function attachment_callback(event)
 end
 
 function plugin.config()
+	-- Register .mdc files as markdown filetype
+	vim.filetype.add({
+		extension = {
+			mdc = "markdown",
+		},
+	})
+
+	-- Add file type detection for Jinja2 files
+	vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+		pattern = { "*.jinja", "*.jinja2", "*.j2" },
+		callback = function()
+			vim.bo.filetype = "jinja"
+		end,
+	})
+
 	-- Create global ToggleDiagnostics command
 	vim.api.nvim_create_user_command("ToggleDiagnostics", function()
 		local diagnostics_enabled = vim.diagnostic.is_disabled()
@@ -103,7 +118,18 @@ function plugin.config()
 		yamlls = {},
 		tailwindcss = {},
 		eslint = {},
-		jinja_lsp = {},
+		jinja_lsp = { filetypes = { "jinja", "jinja2", "j2" } },
+		ts_ls = {
+			filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
+			settings = {
+				typescript = {
+					preferences = {
+						disableSuggestions = false,
+					},
+				},
+			},
+		},
+
 		lua_ls = {
 			settings = {
 				Lua = {

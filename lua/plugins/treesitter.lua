@@ -12,6 +12,7 @@ return { -- Highlight, edit, and navigate code
 			"vim",
 			"vimdoc",
 			"python",
+			"jinja",
 			"java",
 			"javascript",
 			"typescript",

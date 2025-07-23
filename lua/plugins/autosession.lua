@@ -40,6 +40,9 @@ function plugin.config()
 			prompt_title = "Select Session to Delete",
 			cwd = session_dir,
 			attach_mappings = function(prompt_bufnr, map)
+				-- Disable default actions that might conflict
+				require("telescope.actions").select_default:replace(function() end)
+
 				-- Custom action to delete a session file without closing the picker
 				local delete_session_action = function()
 					local selection = require("telescope.actions.state").get_selected_entry(prompt_bufnr)
@@ -49,19 +52,19 @@ function plugin.config()
 						-- Delete the file
 						delete_session(session_file)
 
-						-- Remove the selection from the picker results
-						local actions_state = require("telescope.actions.state")
-						local picker = actions_state.get_current_picker(prompt_bufnr)
-						picker:delete_selection(function() end)
+						-- Close and reopen the picker instead of refreshing
+						require("telescope.actions").close(prompt_bufnr)
+						vim.schedule(function()
+							vim.cmd("SessionDelete")
+						end)
 					end
-					return true
 				end
 
 				-- Map Enter in insert mode to delete session
 				map("i", "<CR>", delete_session_action)
 
-				-- Map dd in normal mode to delete session (consistent with your global telescope config)
-				map("n", "dd", delete_session_action)
+				-- Map x in normal mode to delete session
+				map("n", "x", delete_session_action)
 
 				-- Open session with Enter in normal mode
 				map("n", "<CR>", function()
@@ -72,7 +75,6 @@ function plugin.config()
 						-- Load the selected session
 						require("auto-session").RestoreSession(selection.path)
 					end
-					return true
 				end)
 
 				return true
