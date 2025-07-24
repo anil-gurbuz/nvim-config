@@ -199,6 +199,7 @@ end
 
 plugin.keys = {
 	{ "<C-s>", "<cmd>PrtChatRespond<cr>", mode = { "i", "v", "n" }, desc = "[S]end Answer" },
+	{ "<C-g>", "<cmd>PrtChatStop<cr>", mode = { "i", "v", "n" }, desc = "[S]top [S]treaming" },
 
 	{ "<leader>js", "<cmd>PrtChatNew<cr>", mode = { "n" }, desc = "[J]droid [S]tart" },
 	{ "<leader>jq", "<cmd>PrtStop<cr>", mode = { "n" }, desc = "[J]droid [Q]uit" },
